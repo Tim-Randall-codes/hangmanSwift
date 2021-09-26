@@ -30,23 +30,3 @@ let words = ["piano", "guitar", "flute", "kookaburra", "tiger", "apple", "bigmac
              "spoon", "kettle", "refrigerator", "floor", "roof", "picture",
              "keyboard", "computer", "lamp", "wood", "metal", "program"]
 
-var word = words[Int.random(in: 1...142)]
-
-func newWord() {
-    word = words[Int.random(in: 1...142)]
-    }
-
-func displayWord(x: String) -> String {
-    var dw: String = ""
-    for _ in x {
-        dw += "*"
-    }
-    return dw
-}
-
-var dword: String = displayWord(x: word)
-
-var entry1: String = ""
-
-var announce: String = ""
-
