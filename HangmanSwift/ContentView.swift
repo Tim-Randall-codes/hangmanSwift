@@ -10,19 +10,21 @@ import SwiftUI
 struct ContentView: View {
     @State var displayMessage: String = ""
     @State var wrongGuesses: Int = 0
-    @State var randomWord = words[Int.random(in: 1...142)]
+    @State var randomWord = ""
+    @State var checkingWord: [(letter: String, guessed: Bool)] = []
     @State var userInput: String = ""
-    @State var correctAnswers: String = ""
     @State var displayWord = ""
     @State var buttonDisplay: String = "Check Answer"
-    @State var newGameSwitch: Bool = false
+    @State var newGameSwitch: Bool = true
+    @State var lettersToGuess: Int = 0
     var body: some View {
         ZStack{
             Color(.black)
             VStack{
                 TextWidget(input: "^_^ Hangman ^_^")
                 TextWidget(input: randomWord)
-                TextWidget(input: correctAnswers)
+                TextWidget(input: displayWord)
+                TextWidget(input: userInput)
                 TextWidget(input: String(wrongGuesses))
                 HStack {
                     ImageView(number: wrongGuesses)
@@ -30,12 +32,14 @@ struct ContentView: View {
                 }
                 TextField("Enter a single letter here", text: $userInput)
                     .padding()
+                    .textCase(.lowercase)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                 if newGameSwitch == false {
                     Button(action:{
                         if validateInput(x: userInput) == true {
                             displayMessage = ""
                             checkAnswer()
+                            createDisplayWord()
                         }
                         else {
                             displayMessage = "Please enter a single letter"
@@ -47,6 +51,7 @@ struct ContentView: View {
                 else {
                     Button(action:{
                         createNewGame()
+                        createDisplayWord()
                     }, label:{
                         ButtonDesign(input: "Press for New Game")
                     })
@@ -66,38 +71,35 @@ struct ContentView: View {
         return letPass
     }
     
-    func checkAnswer () {
-        var switch1: Bool = false
-        for character in randomWord {
-            if userInput.lowercased().contains(character) {
-                correctAnswers.append(character)
-                switch1 = true
-            }
-        }
-        if switch1 == false {
-            wrongGuesses += 1
-        }
-        if wrongGuesses == 7 {
-            buttonDisplay = "Press for New Game"
-            displayWord = "You lose, too many guesses!"
-            newGameSwitch = true
-        }
-        if correctAnswers.count == randomWord.count {
-            buttonDisplay = "Press for New Game"
-            displayWord = "Well done ^^, you guessed the word :)!!"
-            newGameSwitch = true
-        }
-    }
-    
     func createNewGame () {
         randomWord = words[Int.random(in: 1...142)]
+        lettersToGuess = randomWord.count
+        for character in randomWord {
+            checkingWord.append((letter: String(character), guessed: false))
+        }
         newGameSwitch = false
-        correctAnswers = ""
-        wrongGuesses = 0
+    }
+    
+    func checkAnswer () {
+        userInput = userInput.lowercased()
+        for var item in checkingWord {
+            if item.letter == userInput {
+                item.guessed = true
+                lettersToGuess -= 1
+            }
+        }
     }
     
     func createDisplayWord () {
-        
+        displayWord = ""
+        for item in checkingWord {
+            if item.guessed == true {
+                displayWord.append(item.letter)
+            }
+            else {
+                displayWord.append("*")
+            }
+        }
     }
 }
 
