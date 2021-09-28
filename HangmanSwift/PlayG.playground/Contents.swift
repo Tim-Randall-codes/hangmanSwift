@@ -18,5 +18,25 @@ for item in stuff {
         newString.append(item.name)
     }
 }
-print(stuff)
-print(newString)
+print(stuff[0].name)
+
+struct Letter {
+    var char: String
+    var guessed: Bool
+    init (char: String, guessed: Bool) {
+        self.char = char
+        self.guessed = guessed
+    }
+}
+var checkingWord = [Letter]()
+checkingWord.append(Letter(char: "a", guessed: false))
+checkingWord.append(Letter(char: "b", guessed: false))
+checkingWord.append(Letter(char: "c", guessed: false))
+print(checkingWord)
+for index in checkingWord.indices {
+    if checkingWord[index].char == "b" {
+        checkingWord[index].guessed = true
+    }
+}
+print(checkingWord)
+
