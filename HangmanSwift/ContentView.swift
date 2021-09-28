@@ -72,21 +72,37 @@ struct ContentView: View {
     }
     
     func createNewGame () {
-        randomWord = words[Int.random(in: 1...142)]
+        randomWord = words[Int.random(in: 0...141)]
         lettersToGuess = randomWord.count
         for item in randomWord {
             checkingWord.append(Letter(char: String(item), guessed: false))
         }
+        wrongGuesses = 0
         newGameSwitch = false
     }
     
     func checkAnswer () {
         userInput = userInput.lowercased()
+        var noCorrectAnswers: Bool = true
         for index in checkingWord.indices {
             if checkingWord[index].char == userInput {
                 checkingWord[index].guessed = true
+                lettersToGuess -= 1
+                noCorrectAnswers = false
             }
         }
+        if noCorrectAnswers == true {
+            wrongGuesses += 1
+        }
+        if wrongGuesses == 7 {
+            displayMessage = "Game over buddy, you only get 7 guesses"
+            newGameSwitch = true
+        }
+        if lettersToGuess == 0 {
+            displayMessage = "Good job you guesses all the letters"
+            newGameSwitch = true
+        }
+        userInput = ""
     }
     
     func createDisplayWord () {
