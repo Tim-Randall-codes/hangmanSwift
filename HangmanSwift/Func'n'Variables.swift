@@ -30,3 +30,11 @@ let words = ["piano", "guitar", "flute", "kookaburra", "tiger", "apple", "bigmac
              "spoon", "kettle", "refrigerator", "floor", "roof", "picture",
              "keyboard", "computer", "lamp", "wood", "metal", "program"]
 
+struct Letter {
+    var char: String
+    var guessed: Bool
+    init (char: String, guessed: Bool) {
+        self.char = char
+        self.guessed = guessed
+    }
+}

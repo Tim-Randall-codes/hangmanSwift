@@ -11,7 +11,7 @@ struct ContentView: View {
     @State var displayMessage: String = ""
     @State var wrongGuesses: Int = 0
     @State var randomWord = ""
-    @State var checkingWord: [(letter: String, guessed: Bool)] = []
+    @State var checkingWord = [Letter]()
     @State var userInput: String = ""
     @State var displayWord = ""
     @State var buttonDisplay: String = "Check Answer"
@@ -74,30 +74,29 @@ struct ContentView: View {
     func createNewGame () {
         randomWord = words[Int.random(in: 1...142)]
         lettersToGuess = randomWord.count
-        for character in randomWord {
-            checkingWord.append((letter: String(character), guessed: false))
+        for item in randomWord {
+            checkingWord.append(Letter(char: String(item), guessed: false))
         }
         newGameSwitch = false
     }
     
     func checkAnswer () {
         userInput = userInput.lowercased()
-        for var item in checkingWord {
-            if item.letter == userInput {
-                item.guessed = true
-                lettersToGuess -= 1
+        for index in checkingWord.indices {
+            if checkingWord[index].char == userInput {
+                checkingWord[index].guessed = true
             }
         }
     }
     
     func createDisplayWord () {
         displayWord = ""
-        for item in checkingWord {
-            if item.guessed == true {
-                displayWord.append(item.letter)
+        for index in checkingWord.indices {
+            if checkingWord[index].guessed == false {
+                displayWord.append("*")
             }
             else {
-                displayWord.append("*")
+                displayWord.append(checkingWord[index].char)
             }
         }
     }
