@@ -17,19 +17,19 @@ struct ContentView: View {
     @State var buttonDisplay: String = "Check Answer"
     @State var newGameSwitch: Bool = true
     @State var lettersToGuess: Int = 0
+    @State var wins: Int = 0
+    @State var loses: Int = 0
     var body: some View {
         ZStack{
-            Color(.black)
+            Color(.black).edgesIgnoringSafeArea(.all)
             VStack{
-                TextWidget(input: "^_^ Hangman ^_^")
-                TextWidget(input: randomWord)
+                TextWidget(input: "**  ^_^ Hangman ^_^  **")
+                TextWidget(input: "Wins: \(String(wins)), Loses: \(String(loses))")
+                ImageView(number: wrongGuesses)
+                Spacer()
                 TextWidget(input: displayWord)
-                TextWidget(input: userInput)
-                TextWidget(input: String(wrongGuesses))
-                HStack {
-                    ImageView(number: wrongGuesses)
-                    TextWidget(input: displayMessage)
-                }
+                TextWidget(input: "Incorrect guesses: \(String(wrongGuesses))/7")
+                TextWidget(input: displayMessage)
                 TextField("Enter a single letter here", text: $userInput)
                     .padding()
                     .textCase(.lowercase)
@@ -56,6 +56,7 @@ struct ContentView: View {
                         ButtonDesign(input: "Press for New Game")
                     })
                 }
+                Spacer()
             }
         }
     }
@@ -72,6 +73,7 @@ struct ContentView: View {
     }
     
     func createNewGame () {
+        checkingWord = [Letter]()
         randomWord = words[Int.random(in: 0...141)]
         lettersToGuess = randomWord.count
         for item in randomWord {
@@ -79,6 +81,7 @@ struct ContentView: View {
         }
         wrongGuesses = 0
         newGameSwitch = false
+        displayMessage = ""
     }
     
     func checkAnswer () {
@@ -141,28 +144,28 @@ struct ImageView: View {
     var number: Int
     var body: some View {
         if number == 0 {
-            Image("one").resizable().frame(width: 100, height: 100)
+            Image("one").resizable().frame(width: 150, height: 150)
         }
         else if number == 1 {
-            Image("one").resizable().frame(width: 100, height: 100)
+            Image("one").resizable().frame(width: 150, height: 150)
         }
         else if number == 2 {
-            Image("two").resizable().frame(width: 100, height: 100)
+            Image("two").resizable().frame(width: 150, height: 150)
         }
         else if number == 3 {
-            Image("three").resizable().frame(width: 100, height: 100)
+            Image("three").resizable().frame(width: 150, height: 150)
         }
         else if number == 4 {
-            Image("four").resizable().frame(width: 100, height: 100)
+            Image("four").resizable().frame(width: 150, height: 150)
         }
         else if number == 5 {
-            Image("five").resizable().frame(width: 100, height: 100)
+            Image("five").resizable().frame(width: 150, height: 150)
         }
         else if number == 6 {
-            Image("six").resizable().frame(width: 100, height: 100)
+            Image("six").resizable().frame(width: 150, height: 150)
         }
         else if number == 7 {
-            Image("end").resizable().frame(width: 100, height: 100)
+            Image("end").resizable().frame(width: 150, height: 150)
         }
     }
 }
